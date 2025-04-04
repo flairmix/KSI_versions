@@ -1,0 +1,16 @@
+[project]
+name = "ksi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "advanced-alchemy>=1.0.2",
+    "aiosqlite>=0.21.0",
+    "alembic>=1.15.2",
+    "ipykernel",
+    "litestar>=2.15.1",
+    "pandas>=2.2.3",
+    "sqlalchemy>=2.0.40",
+    "uvicorn>=0.34.0",
+]
