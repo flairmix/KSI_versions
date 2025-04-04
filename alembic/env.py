@@ -1,19 +1,19 @@
-import sys
-import os
 from logging.config import fileConfig
+import os
+import sys
+
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
-# Добавляем текущую директорию в sys.path, чтобы работал импорт models
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../'))
+# Добавляем корень проекта в PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from models import Base  # Импортируем Base для Alembic
+from models import Base  # основной Base
+from models import DatasetVersion, OKSRecord  # импортируем модели (важно для Alembic)
 
-# Alembic Config
 config = context.config
 fileConfig(config.config_file_name)
 
-# Передаём metadata в Alembic
 target_metadata = Base.metadata
 
 def run_migrations_offline():

@@ -1,12 +1,26 @@
-from sqlalchemy import Column, String, Text
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Text
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class OKS(Base):
-    __tablename__ = "oks"
+class DatasetVersion(Base):
+    __tablename__ = "dataset_versions"
 
-    uin = Column("УИН", String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    uploaded_at = Column(DateTime, server_default=func.now())
+    description = Column(Text, nullable=True)
+
+    oks_records = relationship("OKSRecord", back_populates="version", cascade="all, delete")
+
+class OKSRecord(Base):
+    __tablename__ = "oks_records"
+
+    id = Column(Integer, primary_key=True)
+    version_id = Column(Integer, ForeignKey("dataset_versions.id"))
+    uin = Column("УИН", String)
     klass = Column("Класс", String)
     subclass_1 = Column("Подкласс 1", String)
     subclass_2 = Column("Подкласс 2", String)
@@ -23,5 +37,4 @@ class OKS(Base):
     notes = Column("Примечания", Text)
     synonyms = Column("Синонимы", Text)
 
-    def __repr__(self):
-        return f"<OKS(name='{self.name}', uin='{self.uin}')>"
+    version = relationship("DatasetVersion", back_populates="oks_records")
